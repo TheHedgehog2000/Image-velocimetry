@@ -8,6 +8,7 @@ using NaturalSort
 using FFTW
 using StatsBase
 using ImageCore: channelview
+using Images: imresize
 using ImageFiltering: mapwindow, Fill
 using NaNStatistics
 using Revise
