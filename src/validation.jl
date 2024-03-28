@@ -64,16 +64,24 @@ function replace_nans!(array, filled, max_iter, tol; kernel_size=2)
     return nothing
 end
 
-function replace_outliers(u, v, w, flags; max_iter=3, tol=1e-8, kernel_size=3)
-    u[flags] .= NaN
-    v[flags] .= NaN 
-    w[flags] .= NaN 
-    u_replaced = copy(u)
-    v_replaced = copy(v)
-    w_replaced = copy(w)
-    replace_nans!(u, u_replaced, max_iter, tol, kernel_size=kernel_size)
-    replace_nans!(v, v_replaced, max_iter, tol, kernel_size=kernel_size)
-    replace_nans!(w, w_replaced, max_iter, tol, kernel_size=kernel_size)
-
-    return u_replaced, v_replaced, w_replaced 
+function replace_outliers(u, v, w, flags, params; max_iter=3, tol=1e-8, kernel_size=3)
+    if params.replace_method == "localmean"
+        u[flags] .= NaN
+        v[flags] .= NaN 
+        w[flags] .= NaN 
+        u_replaced = copy(u)
+        v_replaced = copy(v)
+        w_replaced = copy(w)
+        replace_nans!(u, u_replaced, max_iter, tol, kernel_size=kernel_size)
+        replace_nans!(v, v_replaced, max_iter, tol, kernel_size=kernel_size)
+        replace_nans!(w, w_replaced, max_iter, tol, kernel_size=kernel_size)
+        return u_replaced, v_replaced, w_replaced 
+    elseif params.replace_method == "zero"
+        u[flags] .= 0.0
+        v[flags] .= 0.0
+        w[flags] .= 0.0
+        return u, v, w
+    else
+        error("Invalid replace_method")
+    end
 end

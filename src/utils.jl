@@ -13,6 +13,7 @@ mutable struct PIVParams
     std_size::Int
     s2n_thresh::Float64
     s2n_method::String
+    replace_method::String
     max_iter::Int
     tol::Float64
     kernel_size::Int
@@ -28,12 +29,12 @@ function pivSettings(;image_folder="", mpass=3, windows=[(64,64,16), (32,32,8), 
                         w_thresh=(-50.0, 50.0), 
                         sig2noise_thresh=1.0, median_thresh=3, 
                         median_size=1, std_thresh=10, std_size=1, s2n_thresh=1.0,
-                        s2n_method="peak2mean",  
+                        s2n_method="peak2mean", replace_method="localmean",  
                         max_iter=9, tol=1e-3, kernel_size=2, median_validate=true, 
                         std_validate=true, global_validate=true, s2n_validate=true)
     return PIVParams(image_folder, mpass, windows, overlaps, u_thresh, v_thresh, w_thresh, 
                      sig2noise_thresh, median_thresh, median_size, std_thresh,
-                     std_size, s2n_thresh, s2n_method, max_iter, tol,
+                     std_size, s2n_thresh, s2n_method, replace_method, max_iter, tol,
                      kernel_size, median_validate, std_validate, global_validate, s2n_validate)
 end
 

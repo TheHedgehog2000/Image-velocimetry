@@ -46,6 +46,6 @@ function main()
     end
 
     fig = arrows((x .- 1) ./ 8, (y .- 1) ./ 8, transpose(u_p[:,:,8]), transpose(v_p[:,:,8]))
-    save("$folder/quiver_test.png", fig)
+    save("$folder/quiver_test_inverted.png", fig)
 end
 main()

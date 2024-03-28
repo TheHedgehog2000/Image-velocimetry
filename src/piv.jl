@@ -87,8 +87,8 @@ function piv(params)
 
     for t in 2:length(files)
         @show t
-        volume1 = Float32.(channelview(load(files[t-1])))
-        volume2 = Float32.(channelview(load(files[t])))
+        volume1 = imresize(Float32.(channelview(load(files[t-1]))), ratio=(1,1,(0.3/0.065)/4))
+        volume2 = imresize(Float32.(channelview(load(files[t]))), ratio=(1,1,(0.3/0.065)/4))
         x = nothing
         y = nothing
         z = nothing
@@ -103,7 +103,7 @@ function piv(params)
                                               volume1, volume2, i, params)
             flags = zeros(Bool, size(u))
             validate!(flags, u, v, w, s2n, i, params)
-            u, v, w = replace_outliers(u, v, w, flags; 
+            u, v, w = replace_outliers(u, v, w, flags, params; 
                                        max_iter=params.max_iter, 
                                        tol=params.tol,
                                        kernel_size=params.kernel_size)
