@@ -11,6 +11,7 @@ using ImageCore: channelview
 using Images: imresize
 using ImageFiltering: mapwindow, Fill
 using NaNStatistics
+using ProgressMeter
 using Revise
 
 include("validation.jl")
@@ -76,7 +77,7 @@ end
 function piv(params)
     
     # Get an array of timelapse files
-    files = sort([f for f in readdir(params.image_folder, join=true) if occursin("noplank", f)],
+    files = sort([f for f in readdir(params.image_folder, join=true) if occursin("noplank", f) && !occursin("isotropic", f)],
                  lt=natural)
 
     # Create a folder to save the results if it doesn't exist
@@ -85,6 +86,7 @@ function piv(params)
     end
 
     for t in 2:length(files)
+        @show t
         volume1 = Float32.(channelview(load(files[t-1])))
         volume2 = Float32.(channelview(load(files[t])))
         x = nothing
@@ -109,7 +111,7 @@ function piv(params)
         # Transform the coordinates
         x, y, z, u, v, w = transform_coords(x, y, z, u, v, w)
         # Save
-        save(params.image_folder*"/Displacements/piv_results_$(t).jld2", 
+        save(params.image_folder*"/Displacements/piv_results_$(t-1).jld2", 
              Dict("x" => x, "y" => y, "z" => z, "u" => u, 
                   "v" => v, "w" => w, "s2n" => s2n, "flags" => flags))
     end
