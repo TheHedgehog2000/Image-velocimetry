@@ -19,12 +19,12 @@ function validate!(flags, u, v, w, s2n, i, params)
         flags[wstd .> params.std_thresh] .= true
     end
     if params.global_validate
-        flags[u .< params.u_thresh[1]/params.overlaps[i][1]] .= true
-        flags[u .> params.u_thresh[2]/params.overlaps[i][1]] .= true
-        flags[v .< params.v_thresh[1]/params.overlaps[i][2]] .= true
-        flags[v .> params.v_thresh[2]/params.overlaps[i][2]] .= true
-        flags[w .< params.w_thresh[1]/params.overlaps[i][3]] .= true
-        flags[w .> params.w_thresh[2]/params.overlaps[i][3]] .= true
+        flags[u .< params.u_thresh[1]] .= true
+        flags[u .> params.u_thresh[2]] .= true
+        flags[v .< params.v_thresh[1]] .= true
+        flags[v .> params.v_thresh[2]] .= true
+        flags[w .< params.w_thresh[1]] .= true
+        flags[w .> params.w_thresh[2]] .= true
     end
     if params.s2n_validate
         flags[s2n .< params.s2n_thresh] .= true

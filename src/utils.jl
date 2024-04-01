@@ -25,8 +25,8 @@ end
 
 function pivSettings(;image_folder="", mpass=3, windows=[(64,64,16), (32,32,8), (16,16,4)], 
                         overlaps=[(32,32,8), (16,16,4), (8,8,2)], 
-                        u_thresh=(-50.0, 50.0), v_thresh=(-50.0, 50.0), 
-                        w_thresh=(-50.0, 50.0), 
+                        u_thresh=(-32.0, 32.0), v_thresh=(-32.0, 32.0), 
+                        w_thresh=(-8.0, 8.0), 
                         sig2noise_thresh=1.0, median_thresh=3, 
                         median_size=1, std_thresh=10, std_size=1, s2n_thresh=1.0,
                         s2n_method="peak2mean", replace_method="localmean",  

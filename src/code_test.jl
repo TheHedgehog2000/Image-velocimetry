@@ -2,6 +2,8 @@ using FileIO
 using NPZ
 using CairoMakie
 using NaturalSort
+using StatsBase
+using NaNStatistics
 
 #x, y, z, u, v, w, s2n, flags = load("../tests/Displacements/piv_results_2.jld2", 
 #                              "x", "y", "z", "u", "v", "w", "s2n", "flags")
@@ -44,7 +46,7 @@ function main()
     w_p = zeros(Float32, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
     flags_tot = zeros(Bool, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
 
-    for i in 20:40
+    for i in 1:10
         u, v, w, flags = load(files[i], "u", "v", "w", "flags")
         u_p += permutedims(u, (2,1,3))
         v_p += permutedims(v, (2,1,3)) 
@@ -62,7 +64,7 @@ function main()
 
     #ps = [Point3f(xi/8, yi/8, zi/2) for xi in x for yi in y for zi in z]
     #ns = [Vec3f(u_p[i], v_p[i], w_p[i]) for i in 1:length(u_p)]
-    fig = arrows((x .- 1) ./ 8, (z .- 1) ./ 2, u_p[:,30,:], w_p[:,30,:])
+    fig = arrows((x.-1), (z.-1).*4, u_p[:,30,:], w_p[:,30,:].*4)
     #fig = arrows(ps, ns, fxaa=true)
     save("$folder/quiver_test_inverted.png", fig)
 end
