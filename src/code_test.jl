@@ -34,18 +34,36 @@ function main()
     folder = "/mnt/h/Dispersal/WT_replicate1_processed/Displacements/"
     files = sort([f for f in readdir(folder, join=true) if occursin("piv_results", f)], lt=natural)
 
-    x, y, u_dummy = load(files[1], "x", "y", "u")
+    x, y, z, u_dummy = load(files[1], "x", "y", "z", "u")
+    x = Int.(x)
+    y = Int.(y)
+    z = Int.(z)
 
-    u_p = zeros(Float32, size(u_dummy))
-    v_p = zeros(Float32, size(u_dummy)) 
+    u_p = zeros(Float32, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
+    v_p = zeros(Float32, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
+    w_p = zeros(Float32, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
+    flags_tot = zeros(Bool, size(u_dummy)[2], size(u_dummy)[1], size(u_dummy)[3])
 
-    for i in 1:10
-        u, v, flags = load(files[i], "u", "v", "flags")
-        u_p += u
-        v_p += v
+    for i in 20:40
+        u, v, w, flags = load(files[i], "u", "v", "w", "flags")
+        u_p += permutedims(u, (2,1,3))
+        v_p += permutedims(v, (2,1,3)) 
+        w_p += permutedims(w, (2,1,3))
+        flags_tot += permutedims(flags, (2,1,3))
     end
 
-    fig = arrows((x .- 1) ./ 8, (y .- 1) ./ 8, transpose(u_p[:,:,8]), transpose(v_p[:,:,8]))
+    u_p[flags_tot .> 0] .= NaN 
+    v_p[flags_tot .> 0] .= NaN  
+    w_p[flags_tot .> 0] .= NaN
+
+    #u_p[distance .< 5] .= NaN
+    #v_p[distance .< 5] .= NaN
+    #w_p[distance .< 5] .= NaN
+
+    #ps = [Point3f(xi/8, yi/8, zi/2) for xi in x for yi in y for zi in z]
+    #ns = [Vec3f(u_p[i], v_p[i], w_p[i]) for i in 1:length(u_p)]
+    fig = arrows((x .- 1) ./ 8, (z .- 1) ./ 2, u_p[:,30,:], w_p[:,30,:])
+    #fig = arrows(ps, ns, fxaa=true)
     save("$folder/quiver_test_inverted.png", fig)
 end
 main()

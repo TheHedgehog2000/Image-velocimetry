@@ -28,7 +28,7 @@ function cross_correlate!(corr, window2, window1, plan, iplan)
     return nothing
 end
 
-function firstPeak(corr)
+Memoize.@memoize function firstPeak(corr)
 	val, idx = findmax(corr)
     return val, Tuple(idx)
 end
@@ -75,7 +75,8 @@ end
 function compute_snr!(corr, SNR, grid_idx, method) 
     max2 = 0.0 
     h, w, d = size(corr,1), size(corr,2), size(corr,3)
-    max1, idx1 = firstPeak(corr) # Eliminate duplicate calc?
+    max1, idx1 = firstPeak(corr) 
+    empty!(memoize_cache(firstPeak))
     if idx1[1] == 1 || idx1[1] == h || idx1[2] == 1 || 
                         idx1[2] == w || idx1[3] == 1 || idx1[3] == d
         SNR[grid_idx] = 0.0

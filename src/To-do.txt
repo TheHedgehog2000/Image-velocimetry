@@ -1,0 +1,2 @@
+1. Play around with validation parameters
+2. Move cross-correlation to GPU

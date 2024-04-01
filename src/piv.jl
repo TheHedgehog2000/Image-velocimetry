@@ -11,7 +11,7 @@ using ImageCore: channelview
 using Images: imresize
 using ImageFiltering: mapwindow, Fill
 using NaNStatistics
-using ProgressMeter
+using Memoize
 using Revise
 
 include("validation.jl")
@@ -86,7 +86,6 @@ function piv(params)
     end
 
     for t in 2:length(files)
-        @show t
         volume1 = imresize(Float32.(channelview(load(files[t-1]))), ratio=(1,1,(0.3/0.065)/4))
         volume2 = imresize(Float32.(channelview(load(files[t]))), ratio=(1,1,(0.3/0.065)/4))
         x = nothing
