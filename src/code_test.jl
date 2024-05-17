@@ -58,10 +58,6 @@ function main()
     v_p[flags_tot .> 0] .= NaN  
     w_p[flags_tot .> 0] .= NaN
 
-    #u_p[distance .< 5] .= NaN
-    #v_p[distance .< 5] .= NaN
-    #w_p[distance .< 5] .= NaN
-
     #ps = [Point3f(xi/8, yi/8, zi/2) for xi in x for yi in y for zi in z]
     #ns = [Vec3f(u_p[i], v_p[i], w_p[i]) for i in 1:length(u_p)]
     fig = arrows((x.-1), (z.-1).*4, u_p[:,30,:], w_p[:,30,:].*4)

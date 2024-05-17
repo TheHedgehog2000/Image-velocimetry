@@ -3,6 +3,7 @@ module PIV
 export piv
 
 using FileIO
+using TiffImages
 using Interpolations
 using NaturalSort
 using FFTW
@@ -86,8 +87,8 @@ function piv(params)
     end
 
     for t in 2:length(files)
-        volume1 = imresize(Float32.(channelview(load(files[t-1]))), ratio=(1,1,(0.3/0.065)/4))
-        volume2 = imresize(Float32.(channelview(load(files[t]))), ratio=(1,1,(0.3/0.065)/4))
+        volume1 = imresize(Float32.(channelview(TiffImages.load(files[t-1]))), ratio=(1,1,(0.3/0.065)/4))
+        volume2 = imresize(Float32.(channelview(TiffImages.load(files[t]))), ratio=(1,1,(0.3/0.065)/4))
         x = nothing
         y = nothing
         z = nothing
